@@ -90,8 +90,8 @@
                                                   " "))))
 
 (defn perfect-match [drink]
-  (= (set (map :value @user-inputs))
-     (set (:ingredients drink))))
+  (empty? (clojure.set/difference (set (:ingredients drink))
+                                  (set (map :value @user-inputs)))))
 
 (defn can-make []
   [:div
