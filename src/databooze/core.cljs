@@ -5,7 +5,6 @@
 
 ;; -------------------------
 ;; State
-(defonce item-id (atom 4))
 (defonce current-input (atom ""))
 (defonce user-inputs (atom []))
 (defonce database (atom [{:id 1
@@ -17,10 +16,11 @@
                          {:id 3
                           :drink-name "mint julip"
                           :ingredients ["ice" "bourbon" "mint" "simple syrup"]}]))
+(defonce last-item-id (atom (count @database)))
 
 (defn save-input []
-  (swap! item-id inc)
-  (swap! user-inputs conj {:id    @item-id
+  (swap! last-item-id inc)
+  (swap! user-inputs conj {:id    @last-item-id
                            :value (clojure.string/lower-case @current-input)})
   (reset! current-input ""))
 
