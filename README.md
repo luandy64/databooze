@@ -12,17 +12,10 @@ Reagent.
 
 ## Development
 
-To get an interactive development environment run:
-
-    lein fig:build
-
-This will auto compile and send all changes to the browser without the
-need to reload. After the compilation process is complete, you will
-get a Browser Connected REPL. An easy way to try it is:
-
-    (js/alert "Am I connected?")
-
-and you should see an alert in the browser window.
+In Emacs, open the `cljs` code in a buffer and run `M-x cider-jack-in-cljs`. A series of prompts will pop up, use the following answers:
+    * `lein`
+    * `figwheel-main`
+    * `dev`
 
 To clean all compiled files:
 
@@ -33,5 +26,6 @@ To create a production build run:
 	lein clean
 	lein fig:min
 
+Then copy the `.js` file it created into `/docs/`
 
-Copyright © 2018 Andy Lu
+Copyright © 2020 Andy Lu
