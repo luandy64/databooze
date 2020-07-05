@@ -78,8 +78,8 @@
            [:span {:style {:margin-right 20}} "Recipe: " recipe]])))]])
 
 (defn almost-match [drink]
-  (clojure.set/intersection (set (map :value @user-inputs))
-                            (set (:ingredients drink))))
+  (not-empty (clojure.set/intersection (set (map :value @user-inputs))
+                                    (set (:ingredients drink)))))
 
 (defn get-missing-stuff [drinks]
   (map (fn [drink]
