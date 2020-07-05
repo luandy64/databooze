@@ -82,7 +82,7 @@
 
 (defn almost-match [drink]
   (not-empty (clojure.set/intersection (set (map :value @user-inputs))
-                                    (set (:ingredients drink)))))
+                                       (set (:ingredients drink)))))
 
 (defn get-missing-stuff [drinks]
   (map (fn [drink]
