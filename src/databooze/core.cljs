@@ -21,7 +21,7 @@
 (defn save-input []
   (swap! item-id inc)
   (swap! user-inputs conj {:id    @item-id
-                           :value @current-input})
+                           :value (clojure.string/lower-case @current-input)})
   (reset! current-input ""))
 
 (defn get-user-input [all-ingredients typed]
@@ -42,6 +42,12 @@
        vec
        (reset! user-inputs)))
 
+(defn title-case [name]
+  (clojure.string/join " "
+                       (map clojure.string/capitalize
+                            (clojure.string/split name
+                                                  " "))))
+
 (defn things-i-have [user-inputs]
   [:div
    [:h2 "Things I have"]
@@ -49,15 +55,10 @@
     (for [ingredient @user-inputs]
       [:li {:key (:id ingredient)}
        [:div
-        [:label {:style {:margin 10}}(:value ingredient)]
+        [:label {:style {:margin 10}}
+         (title-case (:value ingredient))]
         [:button {:on-click #(delete (:id ingredient))}
          "✖"]]])]])
-
-(defn title-case [name]
-  (clojure.string/join " "
-                       (map clojure.string/capitalize
-                            (clojure.string/split name
-                                                  " "))))
 
 (defn perfect-match [drink]
   (empty? (clojure.set/difference (set (:ingredients drink))
@@ -82,8 +83,9 @@
 
 (defn get-missing-stuff [drinks]
   (map (fn [drink]
-         (let [missing (sort (clojure.set/difference (set (:ingredients drink))
-                                                     (set (map :value @user-inputs))))]
+         (let [missing (map title-case
+                            (sort (clojure.set/difference (set (:ingredients drink))
+                                                          (set (map :value @user-inputs)))))]
            {:id (:id drink)
             :drink-name (:drink-name drink)
             :missing (clojure.string/join ", " missing)}))
