@@ -89,9 +89,7 @@
          (let [missing (clojure.set/difference (set (:ingredients drink))
                                                (set (map :value @user-inputs)))
                missing-string (sorted-title-string missing)]
-           {:id (:id drink)
-            :drink-name (:drink-name drink)
-            :missing missing-string}))
+           (assoc drink :missing missing-string)))
        drinks))
 
 (defn almost-make [database user-inputs]
