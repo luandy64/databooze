@@ -31,7 +31,10 @@
             :on-change #(reset! typed
                                 (-> %
                                     .-target
-                                    .-value))}]
+                                    .-value))
+            :on-key-down #(case (.-which %)
+                            13 (save-input)
+                            nil)}]
    [:input {:type "button"
             :value "Submit"
             :on-click save-input}]])
