@@ -109,9 +109,6 @@
          [:span {:style {:margin-right 20}} (title-case (:drink-name drink))]
          [:span {:style {:margin-right 20}} "Missing: " (:missing drink)]]))]])
 
-(defn get-app-element []
-  (gdom/getElement "app"))
-
 (defn main-app []
   [:span.main
    [:h1 "Welcome to DataBooze"]
@@ -120,14 +117,10 @@
    (can-make)
    (almost-make database user-inputs)])
 
-(defn mount [el]
-  (reagent.dom/render [main-app] el))
+(defn mount []
+  (reagent.dom/render [main-app] (gdom/getElement "app")))
 
-(defn mount-app-element []
-  (when-let [el (get-app-element)]
-    (mount el)))
-
-(mount-app-element)
+(defonce start-up (do (mount) true))
 
 (defn ^:after-load on-reload []
-  (mount-app-element))
+  (mount))
