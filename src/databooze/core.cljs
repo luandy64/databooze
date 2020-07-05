@@ -48,6 +48,10 @@
                             (clojure.string/split name
                                                   " "))))
 
+(defn sorted-title-string [coll]
+  (clojure.string/join ", " (map title-case
+                                 (sort coll))))
+
 (defn things-i-have [user-inputs]
   [:div
    [:h2 "Things I have"]
@@ -71,8 +75,7 @@
     (let [matches (filter perfect-match
                           @database)]
       (for [drink matches]
-        (let [recipe (clojure.string/join ", "
-                                          (sort (:ingredients drink)))]
+        (let [recipe (sorted-title-string (:ingredients drink))]
           [:li {:key (:id drink)}
            [:span {:style {:margin-right 20}} (title-case (:drink-name drink))]
            [:span {:style {:margin-right 20}} "Recipe: " recipe]])))]])
@@ -83,12 +86,12 @@
 
 (defn get-missing-stuff [drinks]
   (map (fn [drink]
-         (let [missing (map title-case
-                            (sort (clojure.set/difference (set (:ingredients drink))
-                                                          (set (map :value @user-inputs)))))]
+         (let [missing (clojure.set/difference (set (:ingredients drink))
+                                               (set (map :value @user-inputs)))
+               missing-string (sorted-title-string missing)]
            {:id (:id drink)
             :drink-name (:drink-name drink)
-            :missing (clojure.string/join ", " missing)}))
+            :missing missing-string}))
        drinks))
 
 (defn almost-make [database user-inputs]
